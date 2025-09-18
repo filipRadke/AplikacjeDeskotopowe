@@ -9,7 +9,7 @@ using Node = struct Node{
 
 int main() {
     int len;
-    cout << "Pleas input the list length: ";
+    cout << "Please input the list length: ";
     cin >> len;
 
     //create nodes and set pointers
