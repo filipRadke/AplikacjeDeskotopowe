@@ -8,15 +8,31 @@ using Node = struct Node{
 };
 
 int main() {
+    int len;
+    cout << "Pleas input the list length: ";
+    cin >> len;
+
     //create nodes and set pointers
-    Node* node1 = new Node{"First element", nullptr, nullptr};
-    Node* node2 = new Node{"Second element", nullptr, node1};
-    Node* node3 = new Node{"Third element", nullptr, node2};
+    Node* head = new Node{"", nullptr, nullptr};
 
-    node1->next = node2;
-    node2->next = node3;
+    cout << "Please input value of the first element: ";
+    cin >> head->data;
 
-    Node* current = node1;
+    Node* current = head;
+    Node* previous;
+
+    for(int i = 0; i < len-1; i++)
+    {
+        Node* newNode = new Node{"", nullptr, current};
+        cout << "Please input value of the next element: ";
+        cin >> newNode->data;
+
+        current->next = newNode;
+        previous = current;
+        current = newNode;
+    }
+
+    current = head; //reset current to head
 
     while (true)
     {
@@ -63,17 +79,8 @@ int main() {
                 default:
                     cout << "Invalid option. Try again." << endl;
             }
-
             break;
         }
     }
-    
-    current = node1;
-    while (current != nullptr) {
-        Node* temp = current;
-        current = current->next;
-        delete temp;
-    }
-
     return 0;
 }
