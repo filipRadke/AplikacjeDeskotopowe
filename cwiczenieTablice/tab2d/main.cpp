@@ -8,6 +8,7 @@ int main()
     srand(time(NULL));
 
     int x = 5000, y = 4000;
+    ++x, ++y;
     float fieldArea = 0;
 
     int** filed = createAndFillField(x, y);

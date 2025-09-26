@@ -1,11 +1,11 @@
 #include <cmath>
 float calculateSquare(int z1, int z2, int z3, int z4)
 {
-    float diagonal = sqrt(pow(abs(z1 - z3), 2) + pow(sqrt(2) * 10, 2));
-    float a = sqrt(pow(abs(z1 - z2), 2) + 100);
-    float b = sqrt(pow(abs(z2 - z3), 2) + 100);
-    float c = sqrt(pow(abs(z3 - z4), 2) + 100);
-    float d = sqrt(pow(abs(z4 - z1), 2) + 100);
+    float diagonal = sqrt(pow(abs(z1 - z3), 2) + 2);
+    float a = sqrt(pow(abs(z1 - z2), 2) + 1);
+    float b = sqrt(pow(abs(z2 - z3), 2) + 1);
+    float c = sqrt(pow(abs(z3 - z4), 2) + 1);
+    float d = sqrt(pow(abs(z4 - z1), 2) + 1);
     
     float s1 = (a + b + diagonal) / 2;
     float s2 = (c + d + diagonal) / 2;
