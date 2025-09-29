@@ -6,57 +6,97 @@ using namespace std;
 
 int main()
 {
-    srand(time(NULL));
+  srand(time(NULL));
 
-    string n;
+  int steps = 0;
+  bool stuck = false;
 
-    int x = 10, y = 10;
-    ++x, ++y;
+  int x = 10, y = 10;
+  ++x, ++y;
 
-    int **field = createAndFillField(x, y);
-    bool **map = createMap(x, y);
+  int **field = createAndFillField(x, y);
+  bool **map = createMap(x, y);
 
-    for (int i = 0; i < x; i++)
+  for (int i = 0; i < x; i++)
+  {
+    for (int j = 0; j < y; j++)
+      {
+          map[i][j] = false;
+      }
+      cout << endl;
+  }
+
+  point *start = new point{rand() % x, rand() % y};
+  point *end = new point{rand() % x, rand() % y};
+  point *next = new point();
+
+  map[start->x][start->y] = true;
+
+  cout << "Start: " << start->x << " " << start->y << endl;
+  cout << "End: " << end->x << " " << end->y << endl;
+
+  while (map[end->x][end->y] == false)
+  {
+    do
     {
-        for (int j = 0; j < y; j++)
+      next = new point{start->x + rand() % 3 - 1, start->y + rand() % 3 - 1};
+      if (next->x < 0)
+        next->x = 0;
+      if (next->y < 0)
+        next->y = 0;
+      if (next->x >= x)
+        next->x = x - 1;
+      if (next->y >= y)
+        next->y = y - 1;
+      !map[next->x][next->y] ? cout << "Free" << endl : cout << "";
+
+      auto safe = [&](int i, int j)
+      {
+        if (i >= 0 && i < x && j >= 0 && j < y)
         {
-            map[i][j] = false;
+          return map[i][j];
+        }
+        return true;
+      };
+
+      if (safe(start->x-1,start->y-1) && safe(start->x-1,start->y) && safe(start->x-1,start->y+1) &&
+        safe(start->x,  start->y-1) && safe(start->x,  start->y+1) &&
+        safe(start->x+1,start->y-1) && safe(start->x+1,start->y) && safe(start->x+1,start->y+1))
+        stuck = true;
+    } while (map[next->x][next->y] && stuck == false);
+ 
+    if(stuck)
+    {
+      cout << "Stuck!!!" << endl;
+      cout << "Steps: " << steps;
+
+      delete[] field, map;
+      delete start, end, next;
+  
+      return 0;
+    }
+
+    else
+    {
+      start = next;
+      steps++;
+      cout << "Start x: " << start->x << " y: " << start->y << endl;
+      for(int i = 0; i<11; i++)
+      {
+       for(int j = 0; j<11; j++)
+        {
+           cout << map[i][j];
         }
         cout << endl;
+      }
     }
-    cout << endl;
-
-    point *start = new point{rand() % x, rand() % y};
-    point *end = new point{rand() % x, rand() % y};
-    point *next = new point();
 
     map[start->x][start->y] = true;
+  }
+  cout << "Success, steps: " << steps;
 
-    cout << "Start: " << start->x << " " << start->y << endl;
-    cout << "End: " << end->x << " " << end->y << endl;
+  delete[] field, map;
+  delete start, end, next;
 
-    while (map[end->x][end->y] == false)
-    {
-        do
-        {
-            next = new point{start->x + rand() % 3 - 1, start->y + rand() % 3 - 1};
-            if (next->x < 0)
-                next->x = 0;
-            if (next->y < 0)
-                next->y = 0;
-            if (next->x >= x)
-                next->x = x - 1;
-            if (next->y >= y)
-                next->y = y - 1;
-            //!map[next->x][next->y] ? cout << "Free" << endl : cout << "";
-        } while (map[next->x][next->y]);
-
-        start = next;
-
-        map[start->x][start->y] = true;
-    }
-
-    delete[] field, map;
-    delete start, end, next;
-    return 0;
+  return 0;
 }
