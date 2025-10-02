@@ -1,6 +1,7 @@
 #include "functions.h"
 #include <iostream>
 #include <stdlib.h>
+#include <cmath>
 
 using namespace std;
 
@@ -9,9 +10,10 @@ int main()
   srand(time(NULL));
 
   int steps = 0;
+  float angle = 0;
   bool stuck = false;
 
-  int x = 10, y = 10;
+  int x = 5000, y = 4000;
   ++x, ++y;
 
   int **field = createAndFillField(x, y);
@@ -48,7 +50,6 @@ int main()
         next->x = x - 1;
       if (next->y >= y)
         next->y = y - 1;
-      !map[next->x][next->y] ? cout << "Free" << endl : cout << "";
 
       auto safe = [&](int i, int j)
       {
@@ -68,7 +69,8 @@ int main()
     if(stuck)
     {
       cout << "Stuck!!!" << endl;
-      cout << "Steps: " << steps;
+      cout << "Steps: " << steps << endl;
+      cout << "Avg angle: " << (angle * (180.0 / M_PI))/steps << endl;
 
       delete[] field, map;
       delete start, end, next;
@@ -78,22 +80,33 @@ int main()
 
     else
     {
+      double newAngle;
+      double height = field[start->x][start->y] - field[next->x][next->y];
+      if(next->x != 0 && next->y != 0)
+      {
+        newAngle = calculateAngle(abs(height),sqrt(2));
+      }
+      else
+      {
+        newAngle = calculateAngle(abs(height),1);
+      }
+
+      if(height > 0)
+      {
+        angle -= newAngle;
+      }
+      else
+      {
+        angle += newAngle;
+      }
       start = next;
       steps++;
-      cout << "Start x: " << start->x << " y: " << start->y << endl;
-      for(int i = 0; i<11; i++)
-      {
-       for(int j = 0; j<11; j++)
-        {
-           cout << map[i][j];
-        }
-        cout << endl;
-      }
     }
 
     map[start->x][start->y] = true;
   }
-  cout << "Success, steps: " << steps;
+  cout << "Success, steps: " << steps << endl;
+  cout << "Avg angle: " << angle/steps << endl;
 
   delete[] field, map;
   delete start, end, next;
