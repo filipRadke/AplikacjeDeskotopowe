@@ -106,7 +106,7 @@ int main()
     map[start->x][start->y] = true;
   }
   cout << "Success, steps: " << steps << endl;
-  cout << "Avg angle: " << angle/steps << endl;
+  cout << "Avg angle: " << (angle * (180.0 / M_PI))/steps << endl;
 
   delete[] field, map;
   delete start, end, next;
